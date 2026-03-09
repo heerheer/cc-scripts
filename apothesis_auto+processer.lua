@@ -1,6 +1,7 @@
 -- 适用于刷怪塔的Apotheosis 宝石与装备自动分拣（blockReader + 木桶 NBT 分析）
 -- 作者：Kaisair（可直接使用）
 -- 注意: 木桶放置在海龟右侧，且使用调节器方块连接的外设blockReader连接
+-- 同时保证不是直接输入回收台，可能会吞宝石粉
 
 -- 允许的稀有度
 local mythic_or_epic = {
