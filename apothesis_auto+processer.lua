@@ -17,10 +17,10 @@ end
 -- 从 blockReader 获取木桶内第一个物品的 NBT
 local function readBarrelNBT()
     local data = reader.getBlockData()
-    if not data or not data.items or not data.items[1] then
+    if not data or not data.Items or not data.Items[1] then
         return nil
     end
-    return data.items[1]  -- 返回物品完整 NBT
+    return data.Items[1]  -- 返回物品完整 NBT
 end
 
 -- 判断 rarity
@@ -29,6 +29,18 @@ local function getRarity(nbt)
     if not nbt.tag then return nil end
     if not nbt.tag.affix_data then return nil end
     return nbt.tag.affix_data.rarity
+end
+
+local function dropRight()
+    turtle.turnRight()
+    turtle.drop()
+    turtle.turnLeft()
+end
+
+local function suckRight()
+    turtle.turnRight()
+    turtle.suck()
+    turtle.turnLeft()
 end
 
 while true do
@@ -43,9 +55,7 @@ while true do
             turtle.select(slot)
 
             -- 2. 把物品放入右侧木桶
-            turtle.turnRight()
-            turtle.drop()
-            turtle.turnLeft()
+            dropRight()
 
             -- 等待 blockReader 更新
             sleep(0.2)
@@ -62,27 +72,26 @@ while true do
                 -- 宝石
                 if rarity and mythic_or_epic[rarity] then
                     -- 稀有度是 mythic 或 epic → 下方
-                    turtle.suckRight()
+                    suckRight()
                     turtle.dropDown()
                 else
                     -- 其他宝石 → 上方
-                    turtle.suckRight()
+                    suckRight()
                     turtle.dropUp()
                 end
             else
                 -- 其他物品
                 if rarity then
                     -- 有 affix_data → 上方
-                    turtle.suckRight()
+                    suckRight()
                     turtle.dropUp()
                 else
                     -- 没有 affix_data → 下方
-                    turtle.suckRight()
+                    suckRight()
                     turtle.dropDown()
                 end
             end
         end
-        sleep(0.5)
     end
 
     -- 6. 等待 1 秒
